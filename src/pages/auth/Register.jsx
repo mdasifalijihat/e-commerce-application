@@ -1,22 +1,61 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import Swal from "sweetalert2";
 import SocialLogin from "./SocialLogin";
+import { AuthContext } from "../../components/context/AuthContext";
 
 const Register = () => {
   const [showPass, setShowPass] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const { createUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // এখানে Register Logic লিখতে হবে (Firebase/Auth API/Backend)
-    console.log("Register submitted");
+    const form = e.target;
+    const name = form[0].value;
+    const email = form[1].value;
+    const password = form[2].value;
+    const confirmPassword = form[3].value;
+
+    if (password !== confirmPassword) {
+      return Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Passwords do not match!",
+      });
+    }
+
+    createUser(email, password)
+      .then((result) => {
+        console.log("User Created:", result.user);
+
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful!",
+          text: `Welcome, ${name}!`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        navigate("/"); // redirect to home page
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Registration Failed",
+          text: err.message,
+        });
+      });
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-base-200">
       <div className="w-full max-w-md p-6 bg-base-100 rounded-2xl shadow-xl">
-        <h2 className="text-2xl font-bold text-center text-primary">Register</h2>
+        <h2 className="text-2xl font-bold text-center text-primary">
+          Register
+        </h2>
         <p className="text-center text-sm mt-2">
           Create an account to get started!
         </p>
@@ -99,11 +138,10 @@ const Register = () => {
             Login
           </Link>
         </p>
-      
 
         {/* Social Signup */}
         <div className="flex justify-center gap-4">
-          <SocialLogin/>
+          <SocialLogin />
         </div>
       </div>
     </div>

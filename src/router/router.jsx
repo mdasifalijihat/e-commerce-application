@@ -4,6 +4,7 @@ import Home from "../pages/home/Home";
 import Login from "../pages/auth/Login";
 import Register from "../pages/auth/Register";
 import Profile from "../pages/auth/profile";
+import AdminDashboard from "../pages/dashboard/admin/AdmonDashborad";
 
 export const router = createBrowserRouter([
   {
@@ -17,4 +18,7 @@ export const router = createBrowserRouter([
       { path: "/profile", Component: Profile },
     ],
   },
+  {
+    path:'/adminDashboard',element:<AdminDashboard></AdminDashboard>
+  }
 ]);

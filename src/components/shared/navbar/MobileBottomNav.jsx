@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router";
-import { FiUser, FiLogIn, FiUserPlus, FiShoppingCart } from "react-icons/fi";
+import { FiUser, FiShoppingCart, FiPlus } from "react-icons/fi";
+import { AuthContext } from "../../context/AuthContext";
 
-const MobileBottomNav = ({ isLoggedIn = false, cartCount = 0 }) => {
+const MobileBottomNav = ({ cartCount = 0 }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <div className="md:hidden fixed bottom-0 left-0 right-0 bg-base-100 border-t shadow-lg z-50">
       <div className="flex justify-around items-center py-2">
-        {!isLoggedIn ? (
+        {!user ? (
           <>
             {/* Login Button */}
             <Link
               to="/login"
               className="flex flex-col items-center text-sm text-primary"
             >
-              <FiLogIn className="text-xl" />
+              <FiUser className="text-xl" />
               Login
             </Link>
 
@@ -22,7 +25,7 @@ const MobileBottomNav = ({ isLoggedIn = false, cartCount = 0 }) => {
               to="/register"
               className="flex flex-col items-center text-sm text-primary"
             >
-              <FiUserPlus className="text-xl" />
+              <FiUser className="text-xl" />
               Register
             </Link>
           </>
@@ -40,6 +43,15 @@ const MobileBottomNav = ({ isLoggedIn = false, cartCount = 0 }) => {
                   {cartCount}
                 </span>
               )}
+            </Link>
+
+            {/* Add Product Button */}
+            <Link
+              to="/dashboard/add-product"
+              className="flex flex-col items-center text-sm text-primary"
+            >
+              <FiPlus className="text-xl" />
+              Add Product
             </Link>
 
             {/* Profile Button */}

@@ -1,11 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router";
 import { FiMoon, FiSun } from "react-icons/fi";
 import { HiMenuAlt3 } from "react-icons/hi";
+import { AuthContext } from "../../context/AuthContext";
 
 const Navbar = () => {
   const [theme, setTheme] = useState("light");
   const [isOpen, setIsOpen] = useState(false);
+
+  const { user } = useContext(AuthContext);
 
   // Load saved theme from localStorage
   useEffect(() => {
@@ -58,20 +61,29 @@ const Navbar = () => {
             onClick={toggleTheme}
             className="p-2 rounded-full hover:bg-base-200 transition"
           >
-            {theme === "light" ? (
-              <FiMoon className="text-xl" />
-            ) : (
-              <FiSun className="text-xl" />
-            )}
+            {theme === "light" ? <FiMoon className="text-xl" /> : <FiSun className="text-xl" />}
           </button>
 
-          {/* Auth placeholder */}
-          <Link
-            to="/login"
-            className="btn btn-sm btn-primary rounded-full px-4 hidden md:flex"
-          >
-            Login
-          </Link>
+          {/* Auth */}
+          {user ? (
+            <div className="dropdown dropdown-end">
+              <label tabIndex={0} className="flex items-center gap-2 cursor-pointer">
+                <div className="w-8 h-8 rounded-full overflow-hidden ring ring-primary">
+                  <img src={user.photoURL || "https://i.pravatar.cc/150"} alt="Profile" />
+                </div>
+                <span className="hidden md:block font-medium">{user.displayName || "User"}</span>
+              </label>
+              <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
+                <li>
+                  <Link to="/profile">Profile</Link>
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <Link to="/login" className="btn btn-sm btn-primary rounded-full px-4 hidden md:flex">
+              Login
+            </Link>
+          )}
 
           {/* Mobile Menu button */}
           <button
@@ -98,15 +110,20 @@ const Navbar = () => {
                 </Link>
               </li>
             ))}
-            <li>
-              <Link
-                to="/login"
-                onClick={() => setIsOpen(false)}
-                className="block py-2 text-primary font-semibold"
-              >
-                Login
-              </Link>
-            </li>
+
+            {user ? (
+              <li>
+                <Link to="/profile" onClick={() => setIsOpen(false)} className="block py-2 text-primary font-semibold">
+                  Profile
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/login" onClick={() => setIsOpen(false)} className="block py-2 text-primary font-semibold">
+                  Login
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import Swal from "sweetalert2";
@@ -6,18 +6,20 @@ import SocialLogin from "./SocialLogin";
 import { AuthContext } from "../../components/context/AuthContext";
 
 const Register = () => {
-  const [showPass, setShowPass] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
   const { createUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  // Controlled inputs
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [showPass, setShowPass] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const form = e.target;
-    const name = form[0].value;
-    const email = form[1].value;
-    const password = form[2].value;
-    const confirmPassword = form[3].value;
 
     if (password !== confirmPassword) {
       return Swal.fire({
@@ -39,7 +41,8 @@ const Register = () => {
           showConfirmButton: false,
         });
 
-        navigate("/"); // redirect to home page
+        // redirect to home page
+        navigate("/");
       })
       .catch((err) => {
         Swal.fire({
@@ -68,6 +71,8 @@ const Register = () => {
               type="text"
               placeholder="Enter your full name"
               className="input input-bordered w-full"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               required
             />
           </div>
@@ -79,6 +84,8 @@ const Register = () => {
               type="email"
               placeholder="Enter your email"
               className="input input-bordered w-full"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>
@@ -91,6 +98,8 @@ const Register = () => {
                 type={showPass ? "text" : "password"}
                 placeholder="Enter your password"
                 className="input input-bordered w-full"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
               <button
@@ -113,6 +122,8 @@ const Register = () => {
                 type={showConfirm ? "text" : "password"}
                 placeholder="Confirm your password"
                 className="input input-bordered w-full"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
               <button
@@ -140,7 +151,7 @@ const Register = () => {
         </p>
 
         {/* Social Signup */}
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 mt-4">
           <SocialLogin />
         </div>
       </div>

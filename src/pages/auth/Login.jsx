@@ -1,15 +1,46 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import Swal from "sweetalert2";
 import SocialLogin from "./SocialLogin";
+import { AuthContext } from "../../components/context/AuthContext";
 
 const Login = () => {
+  const { loginUser } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [showPass, setShowPass] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // এখানে Login Logic লিখতে হবে (Firebase/Auth API/Backend)
-    console.log("Login submitted");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    const { email, password } = data;
+
+    loginUser(email, password)
+      .then((result) => {
+        console.log("User Logged In:", result.user);
+
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful!",
+          text: `Welcome back!`,
+          timer: 2000,
+          showConfirmButton: false,
+        });
+
+        navigate("/"); 
+      })
+      .catch((err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Login Failed",
+          text: err.message,
+        });
+      });
   };
 
   return (
@@ -20,7 +51,10 @@ const Login = () => {
           Welcome back! Please login to your account.
         </p>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="mt-6 space-y-4"
+        >
           {/* Email */}
           <div>
             <label className="block text-sm font-medium mb-1">Email</label>
@@ -28,8 +62,11 @@ const Login = () => {
               type="email"
               placeholder="Enter your email"
               className="input input-bordered w-full"
-              required
+              {...register("email", { required: "Email is required" })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+            )}
           </div>
 
           {/* Password */}
@@ -40,7 +77,7 @@ const Login = () => {
                 type={showPass ? "text" : "password"}
                 placeholder="Enter your password"
                 className="input input-bordered w-full"
-                required
+                {...register("password", { required: "Password is required" })}
               />
               <button
                 type="button"
@@ -50,6 +87,9 @@ const Login = () => {
                 {showPass ? <FiEyeOff /> : <FiEye />}
               </button>
             </div>
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
+            )}
           </div>
 
           {/* Submit */}
@@ -65,10 +105,10 @@ const Login = () => {
             Register
           </Link>
         </p>
-        
+
         {/* Social Login */}
-        <div className="flex justify-center gap-4">
-          <SocialLogin/>
+        <div className="flex justify-center gap-4 mt-4">
+          <SocialLogin />
         </div>
       </div>
     </div>

@@ -30,7 +30,7 @@ const AdminProducts = () => {
     resolver: yupResolver(schema),
   });
 
-  const API_URL = "http://localhost:3000/products"; 
+  const API_URL = "http://localhost:3000/products";
 
   // Fetch products
   const fetchProducts = async () => {
@@ -107,14 +107,49 @@ const AdminProducts = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8"
         >
-          <input {...register("name")} placeholder="Product Name" className="input input-bordered w-full" />
-          <input {...register("price")} placeholder="Price" type="number" className="input input-bordered w-full" />
-          <input {...register("category")} placeholder="Category" className="input input-bordered w-full" />
-          <input {...register("stock")} placeholder="Stock Quantity" type="number" className="input input-bordered w-full" />
-          <input {...register("discount")} placeholder="Discount / Offer Price" type="number" className="input input-bordered w-full" />
-          <input {...register("sku")} placeholder="SKU / Code / Brand" className="input input-bordered w-full" />
-          <input {...register("image")} placeholder="Image URL" className="input input-bordered w-full" />
-          <textarea {...register("description")} placeholder="Description" className="textarea textarea-bordered w-full col-span-2"></textarea>
+          <input
+            {...register("name")}
+            placeholder="Product Name"
+            className="input input-bordered w-full"
+          />
+          <input
+            {...register("price")}
+            placeholder="Price"
+            type="number"
+            className="input input-bordered w-full"
+          />
+          <input
+            {...register("category")}
+            placeholder="Category"
+            className="input input-bordered w-full"
+          />
+          <input
+            {...register("stock")}
+            placeholder="Stock Quantity"
+            type="number"
+            className="input input-bordered w-full"
+          />
+          <input
+            {...register("discount")}
+            placeholder="Discount / Offer Price"
+            type="number"
+            className="input input-bordered w-full"
+          />
+          <input
+            {...register("sku")}
+            placeholder="SKU / Code / Brand"
+            className="input input-bordered w-full"
+          />
+          <input
+            {...register("image")}
+            placeholder="Image URL"
+            className="input input-bordered w-full"
+          />
+          <textarea
+            {...register("description")}
+            placeholder="Description"
+            className="textarea textarea-bordered w-full col-span-2"
+          ></textarea>
 
           <button type="submit" className="btn btn-primary col-span-2">
             {editingProduct ? "Update Product" : "Add Product"}
@@ -145,10 +180,16 @@ const AdminProducts = () => {
                   <td>{p.discount || "-"}</td>
                   <td>{p.sku}</td>
                   <td className="flex gap-2">
-                    <button onClick={() => handleEdit(p)} className="btn btn-sm btn-info">
+                    <button
+                      onClick={() => handleEdit(p)}
+                      className="btn btn-sm btn-info"
+                    >
                       Edit
                     </button>
-                    <button onClick={() => handleDelete(p._id)} className="btn btn-sm btn-error">
+                    <button
+                      onClick={() => handleDelete(p._id)}
+                      className="btn btn-sm btn-error"
+                    >
                       Delete
                     </button>
                   </td>

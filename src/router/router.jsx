@@ -8,6 +8,7 @@ import AdminDashboard from "../pages/dashboard/admin/AdmonDashborad";
 import Orders from "../pages/dashboard/adminpage/Orders";
 import Products from "../pages/dashboard/adminpage/Products";
 import Users from "../pages/dashboard/adminpage/Users";
+import ProductPages from "../pages/products/ProductPages";
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "register", element: <Register /> },
       { path: "profile", element: <Profile /> },
+      { path: "products", element: <ProductPages /> },
     ],
   },
   // Admin Routes
